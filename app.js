@@ -124,7 +124,7 @@ function filterProviders() {
         return matchesCity && matchesCategory;
     });
     renderProviders(filtered);
-    if (seeAllContainer) seeAllContainer.style.display = 'none';
+    // if (seeAllContainer) seeAllContainer.style.display = 'none';
 }
 
 function renderProviders(data) {
@@ -191,7 +191,7 @@ async function loadProviderDetails() {
     }
 
     try {
-        const res = await fetch(`http://localhost:3000/api/providers/${id}`);
+            const res = await fetch(`/api/providers/${id}`);
         if (!res.ok) {
             const errData = await res.json().catch(() => ({}));
             throw new Error(errData.error || "Provider not found");
