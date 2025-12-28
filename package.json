@@ -1,0 +1,15 @@
+{
+  "name": "myhomemistri",
+  "version": "1.0.0",
+  "description": "Premium Home Services Marketplace",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^4.22.1",
+    "mongoose": "^7.8.8"
+  }
+}

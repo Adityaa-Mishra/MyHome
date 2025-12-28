@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyHomeMistri | Premium Home Services</title>
+    
+    <!-- Fonts -->
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body id="top">
+    <!-- Animated Background -->
+    <div class="mesh-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="logo">
+            <i class="fa-solid fa-screwdriver-wrench"></i> MyHome<span class="text-teal">Mistri</span>
+        </div>
+        <button class="hamburger" id="hamburgerBtn"><i class="fa-solid fa-bars"></i></button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="active">Find Pros</a>
+            <a href="user-login.html" id="nav-user-link">User Login</a>
+            <a href="provider-dashboard.html" id="nav-provider-link">For Providers</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Master Craftsmanship <br><span class="gradient-text">On Demand</span></h1>
+            <p class="subtitle">Connect with elite home service professionals in your area. Verified, rated, and ready to work.</p>
+            
+            <!-- Filter Bar -->
+            <div class="filter-container glass-panel">
+                <div class="input-group">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <input type="text" id="cityInput" placeholder="Enter City (e.g. Delhi)">
+                </div>
+                <div class="divider"></div>
+                <div class="input-group">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <select id="categorySelect">
+                        <option value="">All Services</option>
+                        <option value="Electrician">Electrician</option>
+                        <option value="Plumber">Plumber</option>
+                        <option value="Carpenter">Carpenter</option>
+                        <option value="Painter">Painter</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Services Section -->
+        <section class="services-section">
+            <div class="section-header" style="justify-content: center;">
+                <h2>Our Services</h2>
+            </div>
+            <div class="services-grid">
+                <div class="service-card" onclick="window.location.href='service-details.html?category=Electrician'">
+                    <i class="fa-solid fa-bolt service-icon"></i>
+                    <h3>Electrician</h3>
+                </div>
+                <div class="service-card" onclick="window.location.href='service-details.html?category=Plumber'">
+                    <i class="fa-solid fa-faucet service-icon"></i>
+                    <h3>Plumber</h3>
+                </div>
+                <div class="service-card" onclick="window.location.href='service-details.html?category=Carpenter'">
+                    <i class="fa-solid fa-hammer service-icon"></i>
+                    <h3>Carpenter</h3>
+                </div>
+                <div class="service-card" onclick="window.location.href='service-details.html?category=Painter'">
+                    <i class="fa-solid fa-paint-roller service-icon"></i>
+                    <h3>Painter</h3>
+                </div>
+            </div>
+        </section>
+
+        <!-- Providers Grid -->
+        <section class="providers-section">
+            <div class="section-header">
+                <h2>Elite Professionals</h2>
+            </div>
+            <div id="providersGrid" class="grid-container">
+                <!-- Cards will be injected here by JS -->
+            </div>
+            <div id="seeAllContainer" style="text-align: center; margin-top: 2rem; display: none;">
+                <button id="seeAllBtn" class="btn-secondary" style="width: auto; padding: 0.8rem 3rem;">See All Providers</button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>Get to Know Us</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                    <li><a href="#">Press Releases</a></li>
+                    <li><a href="#">MyHomeMistri Science</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Connect with Us</h3>
+                <ul>
+                    <li><a href="#">Facebook</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">Instagram</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Make Money with Us</h3>
+                <ul>
+                    <li><a href="provider-dashboard.html">Sell on MyHomeMistri</a></li>
+                    <li><a href="#">Protect and Build Your Brand</a></li>
+                    <li><a href="#">Become an Affiliate</a></li>
+                    <li><a href="#">Advertise Your Products</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Let Us Help You</h3>
+                <ul>
+                    <li><a href="user-login.html">Your Account</a></li>
+                    <li><a href="user-login.html#history">Your Orders</a></li>
+                    <li><a href="#">Help</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="logo">
+                <i class="fa-solid fa-screwdriver-wrench"></i> MyHome<span class="text-teal">Mistri</span>
+            </div>
+            <p>&copy; 2024 MyHomeMistri, Inc. or its affiliates</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
