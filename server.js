@@ -87,6 +87,9 @@ app.get('/api/providers/:id', async (req, res) => {
 // Provider Register
 app.post('/api/providers/register', async (req, res) => {
     try {
+        if (!req.body.password || req.body.password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(req.body.password)) {
+            return res.status(400).json({ error: "Password must be at least 8 characters with a special character" });
+        }
         const existing = await Provider.findOne({ email: req.body.email });
         if (existing) return res.status(400).json({ error: "Provider exists" });
         const newProvider = new Provider(req.body);
@@ -130,6 +133,9 @@ app.post('/api/users/login', async (req, res) => {
 // User Register
 app.post('/api/users/register', async (req, res) => {
     try {
+        if (!req.body.password || req.body.password.length < 8 || !/[!@#$%^&*(),.?":{}|<>]/.test(req.body.password)) {
+            return res.status(400).json({ error: "Password must be at least 8 characters with a special character" });
+        }
         const existing = await User.findOne({ email: req.body.email });
         if (existing) return res.status(400).json({ error: "User exists" });
         const newUser = new User(req.body);
