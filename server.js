@@ -15,7 +15,7 @@ app.use(express.static(path.join(__dirname, '/')));
 
 // --- MONGODB CONNECTION ---
 mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/myhomemistri')
-.then(() => console.log('✅ Connected to MongoDB Compass: myhomemistri'))
+.then(() => console.log('✅ Connected to MongoDB: myhomemistri'))
 .catch(err => console.error('❌ MongoDB connection error:', err));
 
 // --- SCHEMAS & MODELS ---
@@ -30,7 +30,7 @@ const ProviderSchema = new mongoose.Schema({
     name: String,
     email: { type: String, unique: true },
     phone: String,
-    password: { type: String },
+    password: { type: String, required: true },
     specialty: String,
     city: String,
     rating: { type: Number, default: 5.0 },
@@ -47,8 +47,8 @@ const BookingSchema = new mongoose.Schema({
 
 const PostSchema = new mongoose.Schema({
     providerId: { type: mongoose.Schema.Types.ObjectId, ref: 'Provider' },
-    media: String, // Base64 string
-    mediaType: String, // 'image' or 'video'
+    media: String, 
+    mediaType: String, 
     caption: String,
     date: { type: Date, default: Date.now }
 });
@@ -100,6 +100,26 @@ app.post('/api/providers/register', async (req, res) => {
     }
 });
 
+// --- Provider Login Route ---
+app.post('/api/providers/login', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        if (!email || !password) {
+            return res.status(400).json({ error: "Email and password are required" });
+        }
+        const provider = await Provider.findOne({ email });
+        
+        // Comparison logic
+        if (provider && provider.password === password) {
+            res.json(provider);
+        } else {
+            res.status(401).json({ error: 'Invalid provider email or password' });
+        }
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 // Provider: Update Profile
 app.put('/api/providers/:id', async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
@@ -122,9 +142,12 @@ app.put('/api/providers/:id', async (req, res) => {
 app.post('/api/users/login', async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await User.findOne({ email, password });
-        if (user) res.json(user);
-        else res.status(401).json({ error: 'Invalid credentials' });
+        const user = await User.findOne({ email });
+        if (user && user.password === password) {
+            res.json(user);
+        } else {
+            res.status(401).json({ error: 'Invalid user email or password' });
+        }
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -146,7 +169,7 @@ app.post('/api/users/register', async (req, res) => {
     }
 });
 
-// User: Update Profile (Handles email sync for bookings)
+// User: Update Profile
 app.put('/api/users/:id', async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
         return res.status(400).json({ error: "Invalid User ID format" });
@@ -234,13 +257,13 @@ app.get('/api/posts/:providerId', async (req, res) => {
 // Seed Route
 app.get('/api/seed', async (req, res) => {
     const mockProviders = [
-        { name: "Rajesh Kumar", email: "rajesh@test.com", phone: "9876543210", password: "123", specialty: "Electrician", city: "Delhi", rating: 4.8 },
-        { name: "Anita Desai", email: "anita@test.com", phone: "9876543211", password: "123", specialty: "Plumber", city: "Mumbai", rating: 4.9 },
-        { name: "Suresh Singh", email: "suresh@test.com", phone: "9876543212", password: "123", specialty: "Carpenter", city: "Bangalore", rating: 4.7 }
+        { name: "Rajesh Kumar", email: "rajesh@test.com", phone: "9876543210", password: "Password@123", specialty: "Electrician", city: "Delhi", rating: 4.8 },
+        { name: "Anita Desai", email: "anita@test.com", phone: "9876543211", password: "Password@123", specialty: "Plumber", city: "Mumbai", rating: 4.9 },
+        { name: "Suresh Singh", email: "suresh@test.com", phone: "9876543212", password: "Password@123", specialty: "Carpenter", city: "Bangalore", rating: 4.7 }
     ];
     await Provider.deleteMany({});
     await Provider.insertMany(mockProviders);
-    res.send('✅ Database Seeded Successfully!');
+    res.send('✅ Database Seeded Successfully with secure passwords!');
 });
 
 // --- 404 HANDLER FOR API ---
@@ -252,8 +275,7 @@ app.use('/api', (req, res) => {
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 app.get('/login', (req, res) => res.sendFile(path.join(__dirname, 'user-login.html')));
 
-// --- SERVER LISTEN (UPDATED FOR PHONE ACCESS) ---
+// --- SERVER LISTEN ---
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Server running locally: http://localhost:${PORT}`);
-    console.log(`📱 On your phone, visit: http://192.168.0.102:${PORT}`);
+    console.log(`🚀 Server running: http://localhost:${PORT}`);
 });

@@ -584,23 +584,32 @@ window.logoutUser = () => {
 if (providerLoginForm) {
     providerLoginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        // For demo, we simulate login or you can add a real endpoint in server.js
-        // Here we just use the email as the "name" lookup or mock it
-        // Assuming the server has a provider login route, but for now let's mock or use basic logic
-        // Since server.js doesn't have provider login route in the snippet provided, 
-        // I will assume we fetch all providers and match email (insecure but works for demo)
         
+        // 1. Get BOTH email and password from the form
         const email = document.getElementById('loginEmail').value;
-        // In a real app, use POST /api/providers/login
-        const res = await fetch('/api/providers');
-        const providers = await res.json();
-        const provider = providers.find(p => p.email === email);
+        const password = document.getElementById('loginPassword').value; // Make sure this ID exists in your HTML
 
-        if (provider) {
-            localStorage.setItem('currentProvider', JSON.stringify(provider));
-            showProviderDashboard(provider);
-        } else {
-            alert("Provider not found");
+        try {
+            // 2. Send both to the server for verification
+            const res = await fetch('/api/providers/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+                // SUCCESS: Server verified the password
+                localStorage.setItem('currentProvider', JSON.stringify(data));
+                showProviderDashboard(data);
+            } else {
+                // FAILURE: Server rejected the password
+                alert(data.error || "Invalid Credentials");
+            }
+        } catch (err) {
+            console.error("Login Error:", err);
+            alert("Connection error. Is the server running?");
         }
     });
 
